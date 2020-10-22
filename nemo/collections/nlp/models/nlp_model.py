@@ -267,6 +267,7 @@ class NLPModel(ModelPT):
             app_state = AppState()
 
             if app_state.model_parallel_size is not None:
+
                 if app_state.model_parallel_group is None:
                     self.init_model_parallel(app_state.global_rank, app_state.world_size)
 
@@ -277,7 +278,7 @@ class NLPModel(ModelPT):
                         p.model_parallel = False
 
                 # Update PTL trainer to use our configure_ddp
-                self._trainer.accelerator_backend.configure_ddp = self.configure_ddp
+                self._trainer.accelerator_backend.ddp_plugin.configure_ddp = self.configure_ddp
                 # Update PTL trainer to use our _clip_gradients
                 self._trainer.accelerator_backend._clip_gradients = self._clip_gradients
 
