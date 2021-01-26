@@ -318,8 +318,12 @@ class PunctuationCapitalizationModel(NLPModel, Exportable):
             ignore_start_end=self._cfg.dataset.ignore_start_end,
             use_cache=self._cfg.dataset.use_cache,
             num_samples=cfg.num_samples,
-            punct_label_ids_file=self._cfg.class_labels.punct_labels_file,
-            capit_label_ids_file=self._cfg.class_labels.capit_labels_file,
+            punct_label_ids_file=self._cfg.class_labels.punct_labels_file
+            if 'class_labels' in self._cfg
+            else 'punct_label_ids.csv',
+            capit_label_ids_file=self._cfg.class_labels.capit_labels_file
+            if 'class_labels' in self._cfg
+            else 'capit_label_ids.csv',
         )
 
         return torch.utils.data.DataLoader(
@@ -476,7 +480,7 @@ class PunctuationCapitalizationModel(NLPModel, Exportable):
         output_example=None,
         verbose=False,
         export_params=True,
-        do_constant_folding: Optional[bool] = None,
+        do_constant_folding=True,
         keep_initializers_as_inputs=False,
         onnx_opset_version: int = 12,
         try_script: bool = False,
